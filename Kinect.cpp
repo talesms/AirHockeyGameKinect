@@ -80,8 +80,8 @@ void Kinect::SkeletonFrameReady(NUI_SKELETON_FRAME* pSkeletonFrame)
 				{
 					m_game->unpause();
 					const Vector4& jointPosition = skeleton.SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT];
-					m_game->mCurrPlayerPos.mX = jointPosition.y * 4.0f - 2.0f;
-					m_game->mCurrPlayerPos.mY = jointPosition.x * -4.0f + 0.5f;
+					m_game->mCurrPlayerPos.mX = jointPosition.y * 3.5f - 2.0f;
+					m_game->mCurrPlayerPos.mY = jointPosition.x * -3.5f + 0.5f;
 				}
 			
 			break;
