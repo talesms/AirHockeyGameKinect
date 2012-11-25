@@ -1,7 +1,9 @@
 #include "AirHockeyGame.h"
 #include <GL/glut.h>
+#include "Kinect.h"
 
 static AirHockeyGame* game;
+static Kinect* kinect;
 
 /* GLUT callback Handlers */
 
@@ -33,6 +35,7 @@ display(void)
 	//{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		kinect->Update();
 		game->update(t-timePrec);
 		game->draw();
 
@@ -100,6 +103,8 @@ main(int argc, char *argv[])
 	center.mX = 0.0f;
 	center.mY = 0.0f;
 	game = new AirHockeyGame(center);
+	kinect = new Kinect(game);
+
 
     glutInit(&argc, argv);
     glutInitWindowSize(800,600);
@@ -134,6 +139,8 @@ main(int argc, char *argv[])
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
+	kinect->Start();
 
     glutMainLoop();
 

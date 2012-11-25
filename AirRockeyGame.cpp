@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 AirHockeyGame::AirHockeyGame(Vec2 wndCenterPt)
-: MAX_PUCK_SPEED(0.005f), RED_SPEED(0.003f), mBlueScore(0), mRedScore(0)
+: MAX_PUCK_SPEED(0.0055f), RED_SPEED(0.0035f), mBlueScore(0), mRedScore(0)
 {
 	// Save input parameter.
 	mWndCenterPt = wndCenterPt;
