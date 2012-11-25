@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 AirHockeyGame::AirHockeyGame(Vec2 wndCenterPt)
-: MAX_PUCK_SPEED(0.004f), RED_SPEED(0.002f), mBlueScore(0), mRedScore(0)
+: MAX_PUCK_SPEED(0.005f), RED_SPEED(0.003f), mBlueScore(0), mRedScore(0)
 {
 	// Save input parameter.
 	mWndCenterPt = wndCenterPt;
@@ -74,7 +74,7 @@ void AirHockeyGame::update(float dt)
 
 		// Decrease recovery time as time passes.
 		if( mRedRecoverTime > 0.0f )
-			mRedRecoverTime -= dt/10.0f;
+			mRedRecoverTime -= dt/1000.0f;
 	}
 }
 
@@ -250,9 +250,9 @@ void AirHockeyGame::increaseScore(bool blue)
 
 	// A point was just scored, so reset puck to center and
 	// pause game.
-	mPuck->mPosition = Vec2(mWndCenterPt.mX, mWndCenterPt.mY);
+	mPuck->mPosition = Vec2(0.0f, 0.0f);
 	mPuck->mVelocity = Vec2(0.0f, 0.0f);
-	mPuck->mBoundingCircle.c = Vec2(mWndCenterPt.mX, mWndCenterPt.mY);
+	mPuck->mBoundingCircle.c = Vec2(0.0f, 0.0f);
 
 	// After score, pause the game so player can prepare for
 	// next round.

@@ -25,17 +25,20 @@ resize(int width, int height)
 static void 
 display(void)
 {
-    const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+    static double t;
+	static double timePrec;
+	t = (glutGet(GLUT_ELAPSED_TIME));
 
 	//if (t>0.01)
 	//{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		game->update(t);
+		game->update(t-timePrec);
 		game->draw();
 
 		glutSwapBuffers();
 	//}
+    timePrec = t;
 }
 
 
