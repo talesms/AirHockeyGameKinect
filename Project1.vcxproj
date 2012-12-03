@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AirRockeyGame.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Kinect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include=".\Circle.cpp" />
@@ -82,6 +83,7 @@
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include=".\Rect.h" />
     <ClInclude Include=".\AirHockeyGame.h" />

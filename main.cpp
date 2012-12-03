@@ -1,27 +1,18 @@
 #include "AirHockeyGame.h"
 #include <GL/glut.h>
 #include "Kinect.h"
+#include "Camera.h"
 
 static AirHockeyGame* game;
 static Kinect* kinect;
+static Camera* cam;
 
 /* GLUT callback Handlers */
 
 static void 
 resize(int width, int height)
 {
-    const float ar = (float) width / (float) height;
-    
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(-ar, ar, -1.0, 1.0, 2.0, 100.0);
-	gluLookAt(-9.0f , 0.0f, -3.0f, 0.0f, 0.0f, -6.0f, 0.0f,0.0f,1.0f);
-	//gluLookAt(-6.0f, 0.0f, 2.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
-    glMatrixMode(GL_MODELVIEW);
-
-    glLoadIdentity() ;
-
+	cam->ajustPerspective(width, height, -1.0f, 1.0f, 2.0f, 100.0f);
 }
 
 static void 
@@ -38,7 +29,6 @@ display(void)
 		kinect->Update();
 		game->update(t-timePrec);
 		game->draw();
-
 		glutSwapBuffers();
 	//}
     timePrec = t;
@@ -57,7 +47,7 @@ key(unsigned char key, int x, int y)
 		case 'p':
 			game->pause();
 			break;
-		case 'o':
+		case ' ':
 			game->unpause();
 			break;
 
@@ -73,6 +63,11 @@ key(unsigned char key, int x, int y)
 		case 'd':
 			game->mCurrPlayerPos.mY -= 0.5f;
 			break;
+
+		case 'z':
+			cam->lock(true); break;
+		case 'x':
+			cam->lock(false); break;
     }
 
     glutPostRedisplay();
@@ -84,30 +79,37 @@ idle(void)
     glutPostRedisplay();
 }
 
-const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
-
-const GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
-const GLfloat mat_diffuse[]    = { 0.8f, 0.8f, 0.8f, 1.0f };
-const GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat high_shininess[] = { 100.0f };
 
 /* Program entry point */
-
 int 
 main(int argc, char *argv[])
 {
-	Vec2 center;
-	center.mX = 0.0f;
-	center.mY = 0.0f;
-	game = new AirHockeyGame(center);
-	kinect = new Kinect(game);
+	const int width		= 800;
+	const int height	= 600;
+
+	const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+	const GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
+
+	const GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
+	const GLfloat mat_diffuse[]    = { 0.8f, 0.8f, 0.8f, 1.0f };
+	const GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat high_shininess[] = { 100.0f };
+
+	const Vec2 center(0.0f, 0.0f);
+	float camEye[]	=	{-9.0f , 0.0f, -3.0f};
+	float camCenter[] =	{0.0f, 0.0f, -6.0f};
+	float camUp[]		=	{0.0f,0.0f,1.0f};
+	float camPerspective[] = {width, height, -1.0f, 1.0f, 2.0f, 100.0f};
+
+	game	= new AirHockeyGame(center);
+	cam		= new Camera(camEye, camCenter, camUp, camPerspective);
+	kinect	= new Kinect(game, cam);
 
 
     glutInit(&argc, argv);
-    glutInitWindowSize(800,600);
+    glutInitWindowSize(width,height);
     glutInitWindowPosition(10,10);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 

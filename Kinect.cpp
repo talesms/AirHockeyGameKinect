@@ -1,7 +1,7 @@
 #include "Kinect.h"
 
-Kinect::Kinect(AirHockeyGame* game)
-	:m_game(game)
+Kinect::Kinect(AirHockeyGame* game, Camera* cam)
+	:m_game(game), m_cam(cam)
 {
 }
 
@@ -62,26 +62,40 @@ void Kinect::SkeletonFrameReady(NUI_SKELETON_FRAME* pSkeletonFrame)
 	for (int i = 0; i < NUI_SKELETON_COUNT; i++)
 	{
 		const NUI_SKELETON_DATA & skeleton = pSkeletonFrame->SkeletonData[i];
-		NUI_SKELETON_POSITION_TRACKING_STATE joint;
- 
+		NUI_SKELETON_POSITION_TRACKING_STATE jointRHand;
+		NUI_SKELETON_POSITION_TRACKING_STATE jointLHand;
+
 		switch (skeleton.eTrackingState)
 		{
 			case NUI_SKELETON_TRACKED:
 			
-				joint = skeleton.eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_HAND_RIGHT];
-				
-				if (joint == NUI_SKELETON_POSITION_NOT_TRACKED || joint == NUI_SKELETON_POSITION_NOT_TRACKED)
+				jointRHand = skeleton.eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_HAND_RIGHT];
+				jointLHand = skeleton.eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_HAND_LEFT];
+
+				if (jointRHand == NUI_SKELETON_POSITION_NOT_TRACKED)
 				{
 					m_game->pause();
-					return; // nothing to do,  joint is not tracked
+					return; // nothing to do,  joints arent tracked
 				}
 				
-				if (joint == NUI_SKELETON_POSITION_TRACKED)
+				if (jointRHand == NUI_SKELETON_POSITION_TRACKED)
 				{
 					m_game->unpause();
 					const Vector4& jointPosition = skeleton.SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT];
 					m_game->mCurrPlayerPos.mX = jointPosition.y * 3.5f - 2.0f;
 					m_game->mCurrPlayerPos.mY = jointPosition.x * -3.5f + 0.5f;
+				}
+
+				if (jointLHand == NUI_SKELETON_POSITION_TRACKED)
+				{
+					const Vector4& jointPosition = skeleton.SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT];
+					m_cam->ajustEye(jointPosition.x, jointPosition.y, jointPosition.z);
+
+					if(!m_cam->isLocked() && jointPosition.y < 0.0f)
+						m_cam->lock(true);
+
+					if (m_cam->isLocked() && jointPosition.y > 0.0f)
+						m_cam->lock(false);
 				}
 			
 			break;

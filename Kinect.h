@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <NuiApi.h>
 #include "AirHockeyGame.h"
+#include "Camera.h"
 
 class Kinect
 {
@@ -15,10 +16,11 @@ private:
 	HRESULT					FindKinectSensor();
 	void					SkeletonFrameReady(NUI_SKELETON_FRAME * skeletonFrame);
 	AirHockeyGame*			m_game;
+	Camera*					m_cam;
 
 
 public:
-							Kinect(AirHockeyGame* game);
+							Kinect(AirHockeyGame* game, Camera* cam);
 							~Kinect(void);
 	HRESULT					Start();
 	void					Update();
