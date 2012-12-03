@@ -62,9 +62,9 @@ bool Camera::isLocked()
 
 void Camera::ajustEye(float x, float y, float z)
 {
-	mEye[0] = -9.0f + x;
-	mEye[1] = y;
-	mEye[2] = -3.0f + z;
+	mEye[0] = -9.0f + y*5;
+	mEye[1] = 1.0f + x*6;
+	mEye[2] = -3.0f + z*5;
 
 	if(!mLock)
 		reload();

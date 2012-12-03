@@ -252,6 +252,7 @@ void AirHockeyGame::increaseScore(bool blue)
 	// pause game.
 	mPuck->mPosition = Vec2(0.0f, 0.0f);
 	mPuck->mVelocity = Vec2(0.0f, 0.0f);
+	mPuck->mVelocity.mX = -0.0025 + 0.005*blue;
 	mPuck->mBoundingCircle.c = Vec2(0.0f, 0.0f);
 
 	// After score, pause the game so player can prepare for
