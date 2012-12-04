@@ -21,7 +21,7 @@ AirHockeyGame::AirHockeyGame(Vec2 wndCenterPt)
 	Vec2 v0(0.0f, 0.0f);
 	mGameBoard = new Model(BOARD, p0, v0, bc);
 	p0.mX = -1.5f;
-	v0.mX = -0.0001f;
+	v0.mX = -0.0004f;
 	bc.c = p0;
 	bc.r = 0.3f; // Puck radius = 0.3
 	mPuck = new Model(PUCK, p0, v0, bc);

@@ -22,15 +22,15 @@ display(void)
 	static double timePrec;
 	t = (glutGet(GLUT_ELAPSED_TIME));
 
-	//if (t>0.01)
-	//{
+	if (t>0.01)
+	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		kinect->Update();
 		game->update(t-timePrec);
 		game->draw();
 		glutSwapBuffers();
-	//}
+	}
     timePrec = t;
 }
 
@@ -50,24 +50,6 @@ key(unsigned char key, int x, int y)
 		case ' ':
 			game->unpause();
 			break;
-
-		case 'w':
-			game->mCurrPlayerPos.mX += 0.5f;
-			break;
-		case 's':
-			game->mCurrPlayerPos.mX -= 0.5f;
-			break;
-		case 'a':
-			game->mCurrPlayerPos.mY += 0.5f;
-			break;
-		case 'd':
-			game->mCurrPlayerPos.mY -= 0.5f;
-			break;
-
-		case 'z':
-			cam->lock(true); break;
-		case 'x':
-			cam->lock(false); break;
     }
 
     glutPostRedisplay();
